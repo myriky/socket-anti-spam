@@ -169,7 +169,7 @@ exports.ban = function(data, min) {
   if (typeof(users[data.ip]) != 'undefined')
     ip = data.ip
   if (ip)
-    return ban(true, ip)
+    return ban(true, ip, min)
   return false
 }
 
