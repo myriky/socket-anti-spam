@@ -158,6 +158,14 @@ function authenticate(socket, cb) {
     cb(data)
 }
 
+exports.ban_ip = function(ip, min) {
+  if (not(min))
+    min = options.banTime
+  if(ip)
+    return ban(true, ip, min)
+  return false
+}
+
 exports.ban = function(data, min) {
   if (not(data))
     throw new Error('No options defined')
@@ -186,6 +194,18 @@ exports.unBan = function(data) {
 }
 
 function ban(ban, data, min) {
+
+  if(users[data] === undefined) {
+    users[data] = {
+      score:           0,
+      banned:          false,
+      kickCount:       0,
+      bannedUntil:     0,
+      lastInteraction: moment(),
+      lastLowerKick:   moment(),
+    }
+  }
+
   users[data].kickCount = 0
   users[data].score = 0
   if (ban) {
